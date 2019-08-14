@@ -1,0 +1,47 @@
+package com.sybercare.hospital.common.jobs;
+
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
+import com.sybercare.hospital.adapters.worker.HisWorkEvents;
+import com.sybercare.hospital.adapters.worker.HisWorkManagers;
+import com.sybercare.hospital.common.utils.Constants;
+import com.sybercare.hospital.health.worker.SybWorkEvents;
+import com.sybercare.hospital.health.worker.SybWorkManagers;
+
+@Component 
+public class AsyncTask {
+	
+	@Autowired
+	private SybWorkManagers sybWorkManagers;
+
+	@Autowired
+	private HisWorkManagers hisWorkManagers;
+
+	@Async("mySimpleAsync")
+	public void doStaffIt() {
+		System.out.println(Thread.currentThread().getName()+"job 员工定时器：" + Constants.convert(new Date(), Constants.format2));
+		this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHWENZHOUYIYUAN, SybWorkEvents.SYBSTAFF);
+	}
+	
+	@Async("mySimpleAsync") 
+	public void doPatientIt() {
+		System.out.println(Thread.currentThread().getName()+"job 患者定时器：" + Constants.convert(new Date(), Constants.format2));
+		this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHWENZHOUYIYUAN, SybWorkEvents.SYBPATIENT);
+	}
+	
+	@Async("mySimpleAsync")
+	public void doPotherIt() {
+		System.out.println(Thread.currentThread().getName()+"job 医嘱定时器：" + Constants.convert(new Date(), Constants.format2));
+		this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHWENZHOUYIYUAN, SybWorkEvents.SYBPOTHER);
+	}
+	
+	@Async("mySimpleAsync")
+	public void doXueTangIt() {
+		System.out.println(Thread.currentThread().getName()+"job 血糖定时器：" + Constants.convert(new Date(), Constants.format2));
+		this.sybWorkManagers.onEvents(SybWorkEvents.SYBPUSHXUETANG, HisWorkEvents.HISRECVWENZHOUYIYUAN);//血糖数据上传
+	}
+}

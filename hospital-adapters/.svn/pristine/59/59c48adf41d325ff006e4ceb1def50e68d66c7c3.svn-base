@@ -1,0 +1,38 @@
+package com.sybercare.hospital.common.jobs;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.sybercare.hospital.adapters.worker.HisWorkEvents;
+import com.sybercare.hospital.adapters.worker.HisWorkManagers;
+import com.sybercare.hospital.health.worker.SybWorkEvents;
+import com.sybercare.hospital.health.worker.SybWorkManagers;
+
+/**
+ * 功能：运行定时业务
+ * 
+ * @author 任梁荣
+ * */
+@Component
+public class Jobs {
+	public final static long ONE_Minute = 60 * 1000;
+
+	@Autowired
+	private SybWorkManagers sybWorkManagers;
+
+	@Autowired
+	private HisWorkManagers hisWorkManagers;
+
+	@Async
+	@Scheduled(cron = "0 0/4 * * * ?")
+	public void doIt() {
+		System.out.println("job 定时器");
+		this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHMIANYANGSANYUAN, SybWorkEvents.SYBSTAFF);
+		this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHMIANYANGSANYUAN, SybWorkEvents.SYBPATIENT);
+		//this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHDONGHUA, SybWorkEvents.SYBDEPARTMENT);//科室信息
+		//this.hisWorkManagers.onEvents(HisWorkEvents.HISPUSHDONGHUA, SybWorkEvents.SYBSTAFF);//员工信息
+		//this.sybWorkManagers.onEvents(SybWorkEvents.SYBPUSHXUETANG, HisWorkEvents.HISRECVDONGHUA);//血糖数据上传
+	}
+}

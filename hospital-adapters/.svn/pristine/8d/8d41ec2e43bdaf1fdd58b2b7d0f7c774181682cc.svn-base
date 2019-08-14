@@ -1,0 +1,18 @@
+package com.sybercare.hospital.adapters.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+/**
+ * 功能：oracle数据库业务实现
+ *
+ * @author 任梁荣
+ * @version 创建时间：Sep 25, 2017 2:39:22 PM
+ * */
+@Repository
+public class OracleDAO {
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+}
